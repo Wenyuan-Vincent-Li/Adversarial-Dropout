@@ -34,7 +34,7 @@ tf.app.flags.DEFINE_integer('rampdown_length', 50, "rampup_length_for_lamb")
 import adt
 
 lamb_max = FLAGS.lamb_max
-print lamb_max
+print(lamb_max)
 
 def rampup(epoch, rampup_length):
     if epoch < rampup_length:
@@ -161,7 +161,7 @@ def build_test_graph(x, y):
 
 def main(_):
     print(FLAGS.lamb_max, FLAGS.delta, FLAGS.epsilon, FLAGS.top_bn, FLAGS.sigma)
-    print lamb_max
+    print(lamb_max)
     numpy.random.seed(seed=FLAGS.seed)
     tf.set_random_seed(numpy.random.randint(1234)) 
     with tf.Graph().as_default() as g:
@@ -232,7 +232,7 @@ def main(_):
                     
                     # Eval on test data
                     act_values_dict = {}
-                    for key, _ in losses_eval_test.iteritems():
+                    for key, _ in losses_eval_test.items():
                         act_values_dict[key] = 0
                     n_iter_per_epoch = NUM_EVAL_EXAMPLES / FLAGS.eval_batch_size
                     for i in range(n_iter_per_epoch):
@@ -242,7 +242,7 @@ def main(_):
                             act_values_dict[key] += value
                     summary = tf.Summary()
                     current_global_step = sess.run(global_step)
-                    for key, value in act_values_dict.iteritems():
+                    for key, value in act_values_dict.items():
                         summary.value.add(tag=key, simple_value=value / n_iter_per_epoch)
                     if writer_test is not None:
                         writer_test.add_summary(summary, current_global_step)
@@ -258,4 +258,6 @@ def main(_):
 
 
 if __name__ == "__main__":
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
+    os.environ["CUDA_VISIBLE_DEVICES"] = "1"
     tf.app.run()

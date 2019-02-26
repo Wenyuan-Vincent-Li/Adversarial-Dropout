@@ -235,8 +235,8 @@ def main(_):
                     for key, _ in losses_eval_test.items():
                         act_values_dict[key] = 0
                     n_iter_per_epoch = NUM_EVAL_EXAMPLES / FLAGS.eval_batch_size
-                    for i in range(n_iter_per_epoch):
-                        values = losses_eval_test.values()
+                    for i in range(int(n_iter_per_epoch)):
+                        values = list(losses_eval_test.values())
                         act_values = sess.run(values)
                         for key, value in zip(act_values_dict.keys(), act_values):
                             act_values_dict[key] += value
